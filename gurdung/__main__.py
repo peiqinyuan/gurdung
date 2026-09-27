@@ -1,5 +1,3 @@
-
-Enter file contents here
 """Allow running as ``python -m gurdung``."""
 
 import sys
