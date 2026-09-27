@@ -1,5 +1,3 @@
-
-Enter file contents here
 """Command-line interface for gurdung.
 
 Usage::
@@ -57,9 +55,16 @@ class Colors:
         return self.paint(CYAN, text)
 
 
+def _find_item(items: list, item_id: int) -> dict:
+    for item in items:
+        if item["id"] == item_id:
+            return item
+    return None
+
+
 def _print_notes(notes: list, colors: Colors) -> None:
     if not notes:
-        print(colors.yellow("(no notes yet - try: gurdung note add \"your idea\")"))
+        print(colors.yellow("(no notes yet — try: gurdung note add \"your idea\")"))
         return
     for note in notes:
         print(f"{colors.blue(str(note['id'])):>4}. {note['text']}  {colors.cyan('· ' + note['created_at'])}")
@@ -67,11 +72,13 @@ def _print_notes(notes: list, colors: Colors) -> None:
 
 def _print_todos(todos: list, colors: Colors) -> None:
     if not todos:
-        print(colors.yellow("(no todos yet - try: gurdung todo add \"something to do\")"))
+        print(colors.yellow("(no todos yet — try: gurdung todo add \"something to do\")"))
         return
     for todo in todos:
         status = colors.green("✔") if todo["done"] else colors.yellow("◌")
         text = todo["text"]
+        if todo["done"]:
+            text = colors.paint(RESET, text)
         print(f"{colors.blue(str(todo['id'])):>4}. {status} {text}")
 
 
@@ -105,7 +112,7 @@ def main(argv=None) -> int:
         rest = args[1:]
         if action == "add":
             if not rest:
-                print(colors.red("error: missing note text - try: gurdung note add \"text\""))
+                print(colors.red("error: missing note text — try: gurdung note add \"text\""))
                 return 1
             note = storage.add_note(" ".join(rest))
             print(colors.green(f"note #{note['id']} saved"))
@@ -115,7 +122,7 @@ def main(argv=None) -> int:
             return 0
         if action == "rm":
             if not rest:
-                print(colors.red("error: missing note id - try: gurdung note rm <id>"))
+                print(colors.red("error: missing note id — try: gurdung note rm <id>"))
                 return 1
             try:
                 note_id = int(rest[0])
@@ -140,7 +147,7 @@ def main(argv=None) -> int:
         rest = args[1:]
         if action == "add":
             if not rest:
-                print(colors.red("error: missing todo text - try: gurdung todo add \"text\""))
+                print(colors.red("error: missing todo text — try: gurdung todo add \"text\""))
                 return 1
             todo = storage.add_todo(" ".join(rest))
             print(colors.green(f"todo #{todo['id']} added"))
@@ -150,7 +157,7 @@ def main(argv=None) -> int:
             return 0
         if action == "done":
             if not rest:
-                print(colors.red("error: missing todo id - try: gurdung todo done <id>"))
+                print(colors.red("error: missing todo id — try: gurdung todo done <id>"))
                 return 1
             try:
                 todo_id = int(rest[0])
@@ -165,7 +172,7 @@ def main(argv=None) -> int:
             return 0
         if action == "rm":
             if not rest:
-                print(colors.red("error: missing todo id - try: gurdung todo rm <id>"))
+                print(colors.red("error: missing todo id — try: gurdung todo rm <id>"))
                 return 1
             try:
                 todo_id = int(rest[0])
@@ -193,7 +200,7 @@ def main(argv=None) -> int:
         print(f"  todos:   {s['todos_done']}/{s['todos_total']} done")
         return 0
 
-    print(colors.red(f"error: unknown command '{command}' - use 'gurdung --help'"))
+    print(colors.red(f"error: unknown command '{command}' — use 'gurdung --help'"))
     return 1
 
 
