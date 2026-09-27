@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gurdung"
+version = "1.0.0"
+description = "A lightweight CLI tool for capturing ideas and managing todos in your terminal."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "peiqinyuan" }]
+keywords = ["cli", "todo", "notes", "productivity"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+gurdung = "gurdung.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["gurdung*"]
