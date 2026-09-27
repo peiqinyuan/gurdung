@@ -1,5 +1,3 @@
-
-Enter file contents here
 """Data storage layer for gurdung.
 
 Data is persisted as JSON at ``~/.gurdung/data.json`` so no external
